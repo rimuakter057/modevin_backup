@@ -3,20 +3,12 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/prefs/pref_manager.dart';
 import 'core/theme/app_theme.dart';
+import 'core/router/app_pages.dart';
+import 'core/router/app_routes.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/search_controller.dart';
 import 'controllers/bookmark_controller.dart';
 import 'controllers/alert_controller.dart';
-import 'controllers/onboarding_controller.dart';
-import 'views/splash/splash_screen.dart';
-import 'views/onboarding/onboarding_screen.dart';
-import 'views/auth/login_screen.dart';
-import 'views/home/home_screen.dart';
-import 'views/admin/admin_dashboard.dart';
-import 'views/profile/subscription_plans_screen.dart';
-import 'views/profile/notifications_screen.dart';
-import 'views/profile/account_settings_screen.dart';
-import 'views/profile/change_password_screen.dart';
 import 'core/db/db_helper.dart';
 
 void main() async {
@@ -137,48 +129,8 @@ class TheWatchBoxApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: pref.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-          initialRoute: '/splash',
-          getPages: [
-            GetPage(
-              name: '/splash',
-              page: () => const SplashScreen(),
-            ),
-            GetPage(
-              name: '/onboarding',
-              page: () => const OnboardingScreen(),
-              binding: BindingsBuilder(() {
-                Get.lazyPut(() => OnboardingController());
-              }),
-            ),
-            GetPage(
-              name: '/login',
-              page: () => const LoginScreen(),
-            ),
-            GetPage(
-              name: '/home',
-              page: () => const MainContainerScreen(),
-            ),
-            GetPage(
-              name: '/admin',
-              page: () => const AdminDashboard(),
-            ),
-            GetPage(
-              name: '/subscription_plans',
-              page: () => const SubscriptionPlansScreen(),
-            ),
-            GetPage(
-              name: '/notifications',
-              page: () => const ActivityNotificationsScreen(),
-            ),
-            GetPage(
-              name: '/account_settings',
-              page: () => const AccountSettingsScreen(),
-            ),
-            GetPage(
-              name: '/change_password',
-              page: () => const ChangePasswordScreen(),
-            ),
-          ],
+          initialRoute: AppRoutes.splash,
+          getPages: AppPages.pages,
         );
       },
     );

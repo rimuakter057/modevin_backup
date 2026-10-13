@@ -1,6 +1,6 @@
 # The Watch Box (WatchSphere) — Mobile Application & API Specification
 
-**The Watch Box** is an enterprise-grade, high-fidelity luxury watch marketplace and intelligence mobile application built with **Flutter**, **GetX**, and **SQLite**. It aggregates luxury timepieces across tier-1 global marketplaces (**Chrono24**, **eBay**, and **Grailzee**), offering real-time market value spreads, vector cubic Bezier price trend charts, visual AI watch detection, location radar dealer maps, watchlists, saved search alerts, peer-to-peer trader listing capabilities, and an administrative control suite.
+**The Watch Box** is an enterprise-grade, high-fidelity luxury watch marketplace and intelligence mobile application built with **Flutter**, **GetX**, and **SQLite**. It aggregates luxury timepieces across tier-1 global marketplaces (**Chrono24**, **eBay**, and **Grailzee**), offering real-time market value spreads, vector cubic Bezier price trend charts, visual AI watch detection, watchlists, saved search alerts, peer-to-peer trader listing capabilities, and an administrative control suite.
 
 This document serves as the master documentation for the mobile application codebase, detailing all features, controllers, local database tables, their corresponding backend REST API endpoints from `watchBox-Backend`, and clearly highlighting features that currently have **No endpoint for that**.
 
@@ -24,10 +24,9 @@ This document serves as the master documentation for the mobile application code
    - [11. Peer-to-Peer Marketplace & Trader Listings](#11-peer-to-peer-marketplace--trader-listings)
    - [12. In-App Purchasing, Orders & Invoicing](#12-in-app-purchasing-orders--invoicing)
    - [13. Subscriptions, Tier Access & Stripe Billing](#13-subscriptions-tier-access--stripe-billing)
-   - [14. Organizations Radar Map & Service Centers](#14-organizations-radar-map--service-centers)
-   - [15. Social Sharing & Listing Export](#15-social-sharing--listing-export)
-   - [16. Admin Dashboard, Platform Toggles & System Diagnostics](#16-admin-dashboard-platform-toggles--system-diagnostics)
-   - [17. Automation & Social Media Campaigns](#17-automation--social-media-campaigns)
+   - [14. Social Sharing & Listing Export](#14-social-sharing--listing-export)
+   - [15. Admin Dashboard, Platform Toggles & System Diagnostics](#15-admin-dashboard-platform-toggles--system-diagnostics)
+   - [16. Automation & Social Media Campaigns](#16-automation--social-media-campaigns)
 5. [⚠️ Summary of Features with "NO ENDPOINT FOR THAT"](#-summary-of-features-with-no-endpoint-for-that)
 6. [🗄️ Local SQLite Database Architecture (`watch_sphere.db`)](#-local-sqlite-database-architecture-watch_spheredb)
 7. [🚀 Getting Started & Local Execution](#-getting-started--local-execution)
@@ -42,7 +41,7 @@ This document serves as the master documentation for the mobile application code
 - **Screen Responsiveness:** `flutter_screenutil` (Target design size: `390 x 844`)
 - **Offline / Local Persistence:** SQLite via `sqflite` (database file: `watch_sphere.db`)
 - **Client Cache & Flags:** `shared_preferences` (`PrefManager`) for dark mode, onboarding, user credentials, and admin integration toggles
-- **Custom Graphics:** Handcrafted `CustomPainter` vector engines (`CustomPriceChart` for cubic Bezier trend curves, radar rotating search sweep, watermark gear dials)
+- **Custom Graphics:** Handcrafted `CustomPainter` vector engines (`CustomPriceChart` for cubic Bezier trend curves, watermark gear dials)
 
 ### Backend API & Workers (`watchBox-Backend`)
 - **Runtime:** Node.js (`>=22.11.0`), TypeScript, Express (`^4.21.2`)
@@ -68,7 +67,6 @@ lib/
 ├── models/
 │   ├── alert_model.dart                    # Price drop and new listing notifications
 │   ├── bookmark_model.dart                 # Saved listing references
-│   ├── org_marker_model.dart               # Radar service center & dealer coordinates
 │   ├── search_query_model.dart             # Bookmarked queries with JSON filters
 │   ├── user_model.dart                     # User entity (role: user/admin, plan: free/paid)
 │   └── watch_model.dart                    # Watch listing entity (eBay, Chrono24, Grailzee, In-App)
@@ -77,7 +75,6 @@ lib/
 │   ├── alert_controller.dart               # Notifications feed, unread counters, mark-read
 │   ├── auth_controller.dart                # User auth, session manager, plan upgrade/downgrade
 │   ├── bookmark_controller.dart             # Bookmarks toggle and saved searches
-│   ├── map_controller.dart                  # Radar map markers and selected provider
 │   ├── onboarding_controller.dart          # 3-step carousel controller
 │   └── search_controller.dart               # Multi-platform search, filter logic, limit check, P2P transactions
 └── views/
@@ -93,7 +90,6 @@ lib/
     │       ├── search_tab.dart              # Multi-platform search grid & filter drawer
     │       ├── bookmarks_tab.dart           # Bookmarked listings & saved searches tabs
     │       ├── alerts_tab.dart              # Notifications feed (price drops & new listings)
-    │       ├── map_tab.dart                 # Animated radar map with service center pins
     │       └── profile_tab.dart             # Profile stats, plan gauge, settings & theme toggle
     ├── profile/
     │   ├── account_settings_screen.dart     # Account details and settings
@@ -345,17 +341,7 @@ Below is the exhaustive mapping between **every function and feature in the mobi
 
 ---
 
-### 14. Organizations Radar Map & Service Centers
-
-| App Feature / Function | Mobile Implementation (`lib/`) | Backend API Endpoint | Auth Type | Status & Implementation Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **Rotating Radar Search Beam** | `MapTab` (`map_tab.dart`) | **No endpoint for that** | Client Vector Painter | **No endpoint for that**. Animated radial sweep custom-drawn with Flutter `CustomPainter`. |
-| **Service Centers & Dealers Pins**| `MapController._loadProviders()` (`map_controller.dart`)| **No endpoint for that** | Hardcoded Mock Data | **No endpoint for that**. Currently hardcodes 4 service centers/dealers with `dx`, `dy`, `phone`, and `address`. *Backend currently lacks `/api/v1/organizations` or `/api/v1/service-centers` API endpoint.* |
-| **Provider Detail Callout Card** | `MapTab` (Tap pin on radar) | **No endpoint for that** | Local Client State | **No endpoint for that**. Opens provider contact details bottom sheet locally. |
-
----
-
-### 15. Social Sharing & Listing Export
+### 14. Social Sharing & Listing Export
 
 | App Feature / Function | Mobile Implementation (`lib/`) | Backend API Endpoint | Auth Type | Status & Implementation Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -366,7 +352,7 @@ Below is the exhaustive mapping between **every function and feature in the mobi
 
 ---
 
-### 16. Admin Dashboard, Platform Toggles & System Diagnostics
+### 15. Admin Dashboard, Platform Toggles & System Diagnostics
 
 | App Feature / Function | Mobile Implementation (`lib/`) | Backend API Endpoint | Auth Type | Status & Implementation Notes |
 | :--- | :--- | :--- | :--- | :--- |
@@ -389,7 +375,7 @@ Below is the exhaustive mapping between **every function and feature in the mobi
 
 ---
 
-### 17. Automation & Social Media Campaigns
+### 16. Automation & Social Media Campaigns
 
 *(Documented in the project specification PDF: `modevin __ WatchSphere Mobile Application __ Locked Featues 1.pdf`)*
 
@@ -408,16 +394,15 @@ The following table summarizes all client-side, local SQLite, or third-party fea
 
 | Feature Name | Current App Implementation | Why There Is No Endpoint | Recommended Future Backend Endpoint |
 | :--- | :--- | :--- | :--- |
-| **1. Organizations Radar Map** | `MapController._loadProviders()` in `map_controller.dart` | Markers are hardcoded locally in Dart (`dx`, `dy`, phone, address). No backend API exists for physical service centers or authorized dealer locations. | `GET /api/v1/organizations`<br>`GET /api/v1/service-centers`<br>`POST /api/v1/organizations` (Admin) |
-| **2. Custom Peer Billing Invoice Generator** | `MyListingsScreen._showGenerateInvoiceDialog()` & `invoice_preview_screen.dart` | Custom invoice data (`buyer_name`, `buyer_email`, `invoice_no`, `date`, `price`) is stored in local SQLite `invoices` table. Backend has subscription invoices (`/subscriptions/invoices`) but no P2P sale invoice generator. | `POST /api/v1/orders/:orderId/invoices`<br>`GET /api/v1/orders/:orderId/invoice-pdf` |
-| **3. Invoice PDF Export & Printing** | `InvoicePreviewScreen._simulateExport()` in `invoice_preview_screen.dart` | PDF generation and printer spooling are simulated with client-side timers. | `GET /api/v1/invoices/:invoiceId/download-pdf` |
-| **4. Developer Test Login Bypass** | `LoginScreen._submit()` in `login_screen.dart` | Allows instant bypass by typing any username and selecting User/Admin and Free/Paid. Directly modifies local SQLite `users` table. | *Keep client-side for debug builds only.* |
-| **5. Cubic Bezier Trend Line Drawing** | `PriceTrendPainter` in `custom_chart.dart` | Handcrafted Flutter vector mathematics calculating spline curves and gradients. | *Client-side rendering.* (Data supplied via `GET /api/v1/analytics/watch-models/:watchModelId/price-trend`). |
-| **6. Splash Watermarks & Onboarding Pager** | `SplashScreen` & `OnboardingScreen` | Local animations, custom painters, and `shared_preferences` onboarding completion flags. | *Client-side presentation layer.* |
-| **7. Hero Image Parallax & Price Counter** | `WatchDetailScreen` | Smooth scrolling parallax offset and ticker animation controllers. | *Client-side presentation layer.* |
-| **8. Native Social Sharing** | `WatchDetailScreen._showShareSheet()` | Uses OS intents and deep links for WhatsApp, Facebook, and Messenger. | *Client-side OS sharing integration.* |
-| **9. Simulated Price Drop Alert Generator** | `AlertController.triggerSimulatedPriceDropAlert()` | Test button inserting simulated price drops into local SQLite `alerts` table. | *Client-side demo simulation.* (Production alerts generated by server worker `src/workers/run.ts`). |
-| **10. Admin Simulated CPU / RAM Gauges** | `AdminController._startSimulatedDiagnostics()` | Fluctuating hardware gauge numbers generated by client-side timer. | `GET /api/v1/admin/system/metrics` (or bind to existing `/health` checks). |
+| **1. Custom Peer Billing Invoice Generator** | `MyListingsScreen._showGenerateInvoiceDialog()` & `invoice_preview_screen.dart` | Custom invoice data (`buyer_name`, `buyer_email`, `invoice_no`, `date`, `price`) is stored in local SQLite `invoices` table. Backend has subscription invoices (`/subscriptions/invoices`) but no P2P sale invoice generator. | `POST /api/v1/orders/:orderId/invoices`<br>`GET /api/v1/orders/:orderId/invoice-pdf` |
+| **2. Invoice PDF Export & Printing** | `InvoicePreviewScreen._simulateExport()` in `invoice_preview_screen.dart` | PDF generation and printer spooling are simulated with client-side timers. | `GET /api/v1/invoices/:invoiceId/download-pdf` |
+| **3. Developer Test Login Bypass** | `LoginScreen._submit()` in `login_screen.dart` | Allows instant bypass by typing any username and selecting User/Admin and Free/Paid. Directly modifies local SQLite `users` table. | *Keep client-side for debug builds only.* |
+| **4. Cubic Bezier Trend Line Drawing** | `PriceTrendPainter` in `custom_chart.dart` | Handcrafted Flutter vector mathematics calculating spline curves and gradients. | *Client-side rendering.* (Data supplied via `GET /api/v1/analytics/watch-models/:watchModelId/price-trend`). |
+| **5. Splash Watermarks & Onboarding Pager** | `SplashScreen` & `OnboardingScreen` | Local animations, custom painters, and `shared_preferences` onboarding completion flags. | *Client-side presentation layer.* |
+| **6. Hero Image Parallax & Price Counter** | `WatchDetailScreen` | Smooth scrolling parallax offset and ticker animation controllers. | *Client-side presentation layer.* |
+| **7. Native Social Sharing** | `WatchDetailScreen._showShareSheet()` | Uses OS intents and deep links for WhatsApp, Facebook, and Messenger. | *Client-side OS sharing integration.* |
+| **8. Simulated Price Drop Alert Generator** | `AlertController.triggerSimulatedPriceDropAlert()` | Test button inserting simulated price drops into local SQLite `alerts` table. | *Client-side demo simulation.* (Production alerts generated by server worker `src/workers/run.ts`). |
+| **9. Admin Simulated CPU / RAM Gauges** | `AdminController._startSimulatedDiagnostics()` | Fluctuating hardware gauge numbers generated by client-side timer. | `GET /api/v1/admin/system/metrics` (or bind to existing `/health` checks). |
 
 ---
 
